@@ -1,0 +1,36 @@
+{
+  "name": "react-resize-component",
+  "version": "0.1.0",
+  "description": "Resizable component for React.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && babel src --out-dir dist",
+    "dev": "babel src --watch --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noahjohn9259/react-resizable.git"
+  },
+  "keywords": [
+    "react",
+    "resizable",
+    "resize",
+    "component"
+  ],
+  "author": "Noah John Ucab <noahjohn.ucab@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noahjohn9259/react-resizable/issues"
+  },
+  "homepage": "https://github.com/noahjohn9259/react-resizable#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.16.0",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
+    "rimraf": "^2.5.4"
+  }
+}
