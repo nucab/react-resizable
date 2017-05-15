@@ -12,12 +12,13 @@ class Resizable extends React.Component {
 
 		this.state = Object.assign({}, {
 			position: 'left',
-			delay: 0,
+			prefixClass: '',
 			startX: 0,
 			startY: 0,
 			clientX: 0,
 			width: 0,
 			height: 0,
+			maxWidth: '100%',
 			startWidth: 0,
 			startHeight: 0
 		}, props);
@@ -33,7 +34,8 @@ class Resizable extends React.Component {
 		this.setState({
 			startWidth: 0,
 			width: startWidth + width,
-			startX: e.clientX
+			startX: e.clientX,
+			prefixClass: 'no-transition'
 		});
 
 		document.documentElement.addEventListener('mousemove', this.handleDragging);
@@ -48,29 +50,36 @@ class Resizable extends React.Component {
 	}
 
 	handleDragging = e => {
-		const { startX, delay } = this.state;
-		setTimeout(() => {
-			let differenceX = startX - e.clientX;
+		const { startX, position } = this.state;
+		let differenceX;
+		if(position === 'left') {
+			differenceX = startX - e.clientX;
+		} else if(position === 'right') {
+			differenceX = e.clientX - startX;
+		}
 
-			this.setState({
-				startWidth: differenceX,
-				clientX: e.clientX
-			});
-		}, delay);
+		this.setState({
+			startWidth: differenceX,
+			clientX: e.clientX
+		});
 	}
 
 	handleDragStop = () => {
 		document.documentElement.removeEventListener('mousemove', this.handleDragging);
 		document.documentElement.removeEventListener('mouseup', this.handleDragStop);
+		this.setState({
+			prefixClass: ''
+		});
 	}
 
 	render() {
-		const { position, width, startWidth, className } = this.state;
+		const { position, width, startWidth, maxWidth, className, prefixClass } = this.state;
 		let styles = {
+			maxWidth,
 			flexBasis: width + startWidth
 		};
 		return (
-			<div className={classNames('nj-resizable', className)} ref={div => this.divResizable = div} style={styles}>
+			<div className={classNames('nj-resizable', 'flex-wrapper', className, prefixClass)} ref={div => this.divResizable = div} style={styles}>
 				{this.props.children}
 				<div ref={div => this.resizerHandle = div} className={classNames('resizer', `resizer-${position}`)}><span>&nbsp;</span></div>
 			</div>
