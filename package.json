@@ -1,6 +1,6 @@
 {
   "name": "react-resize-component",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Resizable component for React.",
   "main": "dist/index.js",
   "scripts": {
