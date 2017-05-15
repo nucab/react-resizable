@@ -7,33 +7,32 @@ class Resizable extends React.Component {
 		children: PropTypes.object.isRequired
 	};
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
-		this.state = {
-			node: null,
+		this.state = Object.assign({}, {
 			position: 'left',
+			delay: 0,
 			startX: 0,
+			startY: 0,
+			clientX: 0,
 			width: 0,
 			height: 0,
-			startY: 0,
 			startWidth: 0,
 			startHeight: 0
-		};
+		}, props);
 	}
 
 	componentDidMount = () => {
-		this.setState({
-			width: this.divResizable.offsetWidth,
-			startWidth: parseInt(this.divResizable.offsetWidth, 10)
-		});
-
-		this.divResizable.addEventListener('mousedown', this.handleDragStart);
+		this.resizerHandle.addEventListener('mousedown', this.handleDragStart);
 	}
 
 	handleDragStart = e => {
 
+		const { startWidth, width } = this.state;
 		this.setState({
+			startWidth: 0,
+			width: startWidth + width,
 			startX: e.clientX
 		});
 
@@ -45,18 +44,19 @@ class Resizable extends React.Component {
 		if(e.preventDefault) e.preventDefault();
 		e.cancelBubble = true;
 		e.returnValue = false;
+
 	}
 
 	handleDragging = e => {
-
+		const { startX, delay } = this.state;
 		setTimeout(() => {
-			const { startX, startWidth } = this.state;
-			const width = startWidth + startX - e.clientX;
+			let differenceX = startX - e.clientX;
 
 			this.setState({
-				width
+				startWidth: differenceX,
+				clientX: e.clientX
 			});
-		}, 50);
+		}, delay);
 	}
 
 	handleDragStop = () => {
@@ -65,18 +65,14 @@ class Resizable extends React.Component {
 	}
 
 	render() {
-
-
-		const { position, width } = this.state;
-		// console.log(width);
-
+		const { position, width, startWidth, className } = this.state;
 		let styles = {
-			flexBasis: width
+			flexBasis: width + startWidth
 		};
 		return (
-			<div className="nj-resizable" ref={div => this.divResizable = div} style={styles}>
+			<div className={classNames('nj-resizable', className)} ref={div => this.divResizable = div} style={styles}>
 				{this.props.children}
-				<div className={classNames('resizer', `resizer-${position}`)}><span>&nbsp;</span></div>
+				<div ref={div => this.resizerHandle = div} className={classNames('resizer', `resizer-${position}`)}><span>&nbsp;</span></div>
 			</div>
 		);
 	}
