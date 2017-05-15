@@ -9,7 +9,7 @@ This module requires only React and ReactDOM to work. You don't need jQuery for 
 **Simple run: **
 
 ```
-yarn install react-resize-component --save
+yarn add react-resize-component --save
 ```
 
 ## Usage
