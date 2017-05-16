@@ -18,6 +18,7 @@ class Resizable extends React.Component {
 			clientX: 0,
 			width: 0,
 			height: 0,
+      minWidth: 0,
 			maxWidth: '100%',
 			startWidth: 0,
 			startHeight: 0
@@ -25,6 +26,10 @@ class Resizable extends React.Component {
 	}
 
 	componentDidMount = () => {
+	  const { width } = this.state;
+	  this.setState({
+      minWidth: width
+    });
 		this.resizerHandle.addEventListener('mousedown', this.handleDragStart);
 	}
 
@@ -50,13 +55,17 @@ class Resizable extends React.Component {
 	}
 
 	handleDragging = e => {
-		const { startX, position } = this.state;
+		const { startX, position, minWidth, maxWidth, width } = this.state;
 		let differenceX;
 		if(position === 'left') {
 			differenceX = startX - e.clientX;
 		} else if(position === 'right') {
 			differenceX = e.clientX - startX;
 		}
+
+		let boxWidth = width + differenceX;
+
+		if(boxWidth < minWidth || boxWidth > maxWidth) return;
 
 		this.setState({
 			startWidth: differenceX,
@@ -74,6 +83,7 @@ class Resizable extends React.Component {
 
 	render() {
 		const { position, width, startWidth, maxWidth, className, prefixClass } = this.state;
+
 		let styles = {
 			maxWidth,
 			flexBasis: width + startWidth

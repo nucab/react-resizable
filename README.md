@@ -6,7 +6,7 @@ A simple component that you can use to wrap your component and allows to resize 
 
 This module requires only React and ReactDOM to work. You don't need jQuery for this component to work.
 
-**Simple run: **
+**Simply run: **
 
 ```
 yarn add react-resize-component --save
@@ -28,7 +28,7 @@ class SimpleApp extends React.Component {
     };
     
     return (
-      <ResizableBox className="my-custom-class-name" style={customStyles}>
+      <ResizableBox position="right" width={300} maxWidth={350} className="my-custom-class-name" style={customStyles}>
         // Your can add your child component here
       </ResizableBox>;
     );
